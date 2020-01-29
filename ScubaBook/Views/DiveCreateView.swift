@@ -17,7 +17,7 @@ enum SeaHealth {
 
 struct ChosenImage {
     var id = UUID()
-    var imageName: String
+    var imageName = UIImage()
 }
 
 struct DiveCreateView: View {
@@ -64,11 +64,15 @@ struct DiveCreateView: View {
                             .cancel()
                             ])
                     }.sheet(isPresented: $showingImagePicker, content: {
-                        ImagePickerView(isPresented: self.$showingImagePicker)
+                        ImagePickerView(isPresented: self.$showingImagePicker, selectedImage: self.$imageSelected, images: self.$images)
                     })
                     List {
                         ForEach(images, id: \.id) { image in
-                            Image(image.imageName)
+                            
+                            Image(uiImage: self.imageSelected)
+                            .resizable()
+                            .scaledToFill()
+                                .frame(width: 30, height: 30)
                         }
                     }
                 }
@@ -164,8 +168,8 @@ struct DiveCreateView: View {
 struct ImagePickerView: UIViewControllerRepresentable {
     
     @Binding var isPresented: Bool
-//    @Binding var selectedImage: UIImage
-//    @Binding var images: [ChosenImage]
+    @Binding var selectedImage: UIImage
+    @Binding var images: [ChosenImage]
     
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerView>) -> UIViewController {
         let controller = UIImagePickerController()
@@ -188,7 +192,7 @@ struct ImagePickerView: UIViewControllerRepresentable {
             if let selectedImage = info[.originalImage] as? UIImage {
                 print(selectedImage )
 //                self.parent.images.append(ChosenImage(id:UUID(), imageName:selectedImage))
-//                self.parent.selectedImage = selectedImage
+                self.parent.selectedImage = selectedImage
                 self.parent.isPresented = false
             }
             self.parent.isPresented = false
