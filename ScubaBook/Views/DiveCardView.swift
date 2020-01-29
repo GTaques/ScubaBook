@@ -34,10 +34,6 @@ struct DiveCardView: View {
     }
     
     var body: some View {
-        
-        
-         
-       
         VStack(alignment: .leading) {
             ZStack(alignment: .bottomTrailing) {
                     LinearGradient(gradient: Gradient(colors: [Color(lightBlue), Color(darkBlue)]), startPoint: .topTrailing, endPoint: .bottomTrailing)

@@ -20,6 +20,11 @@ struct ChosenImage {
     var imageName = UIImage()
 }
 
+enum SourceType {
+    case camera
+    case library
+}
+
 struct DiveCreateView: View {
     
     @Environment(\.presentationMode) var presentationMode
@@ -44,6 +49,7 @@ struct DiveCreateView: View {
     @State var images: [ChosenImage] = []
     @State private var showingImagePicker = false
     @State var imageSelected = UIImage()
+    @State var sourceType: SourceType
     
     var body: some View {
         NavigationView {
@@ -52,28 +58,36 @@ struct DiveCreateView: View {
                     Button(action: {
                         self.showingSheet = true
                     }) {
-                        Text("Adicionar Imagem")
+                        Text("Add Image")
                     }.actionSheet(isPresented: $showingSheet) {
                         ActionSheet(title: Text("Add Image"), buttons: [
-                            ActionSheet.Button.default(Text("Tirar Foto"), action: {
-                                
+                            ActionSheet.Button.default(Text("Take Photo"), action: {
+                                self.sourceType = .camera
+                                self.showingImagePicker = true
                             }),
-                            ActionSheet.Button.default(Text("Fototeca"), action: {
+                            ActionSheet.Button.default(Text("Photo Library"), action: {
+                                self.sourceType = .library
                                 self.showingImagePicker = true
                             }),
                             .cancel()
                             ])
                     }.sheet(isPresented: $showingImagePicker, content: {
-                        ImagePickerView(isPresented: self.$showingImagePicker, selectedImage: self.$imageSelected, images: self.$images)
+                        ImagePickerView(isPresented: self.$showingImagePicker, images: self.$images, source: self.$sourceType)
                     })
                     List {
                         ForEach(images, id: \.id) { image in
+                            HStack {
+                                Image(uiImage: image.imageName)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 20, height: 20)
+                                .clipped()
+                                .cornerRadius(4)
+                                Text("Image").font(.footnote)
+                            }
                             
-                            Image(uiImage: self.imageSelected)
-                            .resizable()
-                            .scaledToFill()
-                                .frame(width: 30, height: 30)
-                        }
+                        }.onDelete(perform: delete)
+                        .onMove(perform: move)
                     }
                 }
                 Section(header: Text("Details")) {
@@ -163,17 +177,36 @@ struct DiveCreateView: View {
             .navigationBarTitle(Text("New Dive"), displayMode: .inline)
         }
     }
+    
+    func delete(at offsets: IndexSet) {
+        images.remove(atOffsets: offsets)
+    }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        let reversedSource = source.sorted()
+        for index in reversedSource.reversed() {
+            images.insert(images.remove(at: index), at: destination)
+        }
+    }
 }
 
 struct ImagePickerView: UIViewControllerRepresentable {
     
     @Binding var isPresented: Bool
-    @Binding var selectedImage: UIImage
+//    @Binding var selectedImage: UIImage
     @Binding var images: [ChosenImage]
+    @Binding var source: SourceType
     
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerView>) -> UIViewController {
         let controller = UIImagePickerController()
         controller.delegate = context.coordinator
+        switch source {
+        case .camera:
+            controller.sourceType = .camera
+        case .library:
+            controller.sourceType = .photoLibrary
+        }
+        
         return controller
     }
     
@@ -191,8 +224,8 @@ struct ImagePickerView: UIViewControllerRepresentable {
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let selectedImage = info[.originalImage] as? UIImage {
                 print(selectedImage )
-//                self.parent.images.append(ChosenImage(id:UUID(), imageName:selectedImage))
-                self.parent.selectedImage = selectedImage
+                self.parent.images.append(ChosenImage(id:UUID(), imageName:selectedImage))
+//                self.parent.selectedImage = selectedImage
                 self.parent.isPresented = false
             }
             self.parent.isPresented = false
@@ -213,6 +246,6 @@ struct ImagePickerView: UIViewControllerRepresentable {
 struct DiveCreateView_Previews: PreviewProvider {
     
     static var previews: some View {
-        DiveCreateView(health: .bad)
+        DiveCreateView(health: .bad, sourceType: .camera)
     }
 }

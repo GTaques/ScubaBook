@@ -37,7 +37,7 @@ struct ContentView: View {
             }) {
                 Image(systemName: "plus").imageScale(.large)
             }.sheet(isPresented: self.$showingModal) {
-                DiveCreateView(health: .meh)
+                DiveCreateView(health: .meh, sourceType: .library)
             })
         }
         
