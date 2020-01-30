@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 
 struct DiveCard: Identifiable {
@@ -17,5 +18,6 @@ struct DiveCard: Identifiable {
         var diveDate: Date
         var diveNumber: Int
         var diveSite: String
+        var images: [ChosenImage]
         
 }

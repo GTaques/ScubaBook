@@ -19,6 +19,7 @@
 		29784B4623E0689F00ED4363 /* DiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29784B4523E0689F00ED4363 /* DiveDetailView.swift */; };
 		29784B4823E08C7300ED4363 /* DiveCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29784B4723E08C7300ED4363 /* DiveCreateView.swift */; };
 		29D7172923E1FEB100BFBE98 /* ImagePickerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D7172823E1FEB100BFBE98 /* ImagePickerRepresentable.swift */; };
+		29D7172B23E3107400BFBE98 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D7172A23E3107400BFBE98 /* MapView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		29784B4523E0689F00ED4363 /* DiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveDetailView.swift; sourceTree = "<group>"; };
 		29784B4723E08C7300ED4363 /* DiveCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveCreateView.swift; sourceTree = "<group>"; };
 		29D7172823E1FEB100BFBE98 /* ImagePickerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerRepresentable.swift; sourceTree = "<group>"; };
+		29D7172A23E3107400BFBE98 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				29D7172823E1FEB100BFBE98 /* ImagePickerRepresentable.swift */,
+				29D7172A23E3107400BFBE98 /* MapView.swift */,
 			);
 			path = Representables;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 				29784B3123DF2D7300ED4363 /* SceneDelegate.swift in Sources */,
 				29784B4423DF2DC300ED4363 /* DiveCardView.swift in Sources */,
 				2933F92E23E0CB070054AF21 /* DiveCard.swift in Sources */,
+				29D7172B23E3107400BFBE98 /* MapView.swift in Sources */,
 				29784B4823E08C7300ED4363 /* DiveCreateView.swift in Sources */,
 				29784B3323DF2D7300ED4363 /* ContentView.swift in Sources */,
 			);

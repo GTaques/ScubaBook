@@ -20,6 +20,6 @@ struct DiveDetailView: View {
 
 struct DiveDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        DiveDetailView(dive: DiveCardView(durationTime: "", maxDepth: "", diveType: .Scuba, diveDate: Date(), diveNumber: 0, diveSite: ""))
+        DiveDetailView(dive: DiveCardView(durationTime: "", maxDepth: "", diveType: .Scuba, diveDate: Date(), diveNumber: 0, diveSite: "", images: []))
     }
 }

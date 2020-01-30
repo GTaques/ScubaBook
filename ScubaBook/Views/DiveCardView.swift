@@ -26,6 +26,7 @@ struct DiveCardView: View {
     @State var diveDate: Date
     @State var diveNumber: Int
     @State var diveSite: String
+    @State var images: [ChosenImage]
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -36,12 +37,44 @@ struct DiveCardView: View {
     var body: some View {
         VStack(alignment: .leading) {
             ZStack(alignment: .bottomTrailing) {
-                    LinearGradient(gradient: Gradient(colors: [Color(lightBlue), Color(darkBlue)]), startPoint: .topTrailing, endPoint: .bottomTrailing)
+                LinearGradient(gradient: Gradient(colors: [Color(lightBlue), Color(darkBlue)]), startPoint: .topTrailing, endPoint: .bottomTrailing)
+                
+                HStack {
+                    if images.count > 0 {
+                        Image(uiImage: images[0].imageName)
+                            .renderingMode(.original)
+                            .resizable()
+                            .aspectRatio(CGSize(width: 4, height: 3), contentMode: .fit)
+                            .frame(minWidth: 40, idealWidth: 60, maxWidth: 60, alignment: .bottom)
+                            .rotationEffect(.degrees(-30))
+                            .padding(.leading)
+                    }
+                    if images.count > 1 {
+                        Image(uiImage: images[1].imageName)
+                            .renderingMode(.original).resizable()
+                            .aspectRatio(CGSize(width: 4, height: 3), contentMode: .fit)
+                            .frame(minWidth: 40, idealWidth: 65, maxWidth: 65, alignment: .bottom)
+                            .padding(.leading, -10)
+                            .padding(.top, -14)
+                    }
+                    if images.count > 2 {
+                        Image(uiImage: images[2].imageName)
+                            .renderingMode(.original)
+                            .resizable()
+                            .aspectRatio(CGSize(width: 4, height: 3), contentMode: .fit)
+                            .frame(minWidth: 40, idealWidth: 60, maxWidth: 60, alignment: .bottom)
+                            .rotationEffect(.degrees(30))
+                            .padding(.leading, -10)
+                    }
+                    
+                    Spacer()
                     VStack(alignment: .trailing, spacing: 10) {
-                        Text("\(durationTime):00").foregroundColor(.white).fontWeight(.regular).font(.body)
-                        Text("\(maxDepth).00 m").foregroundColor(.white).fontWeight(.regular).font(.body)
-                        Text("Scuba").fontWeight(.bold).padding(.horizontal).background(Color.black).foregroundColor(.white).font(.body)
+                                Text("\(durationTime):00").foregroundColor(.white).fontWeight(.regular).font(.body)
+                                Text("\(maxDepth).00 m").foregroundColor(.white).fontWeight(.regular).font(.body)
+                                Text("Scuba").fontWeight(.bold).padding(.horizontal).background(Color.black).foregroundColor(.white).font(.body)
                     }.padding(.all)
+                }
+                
             }
             .cornerRadius(10)
             VStack(alignment: .leading) {
@@ -57,6 +90,6 @@ struct DiveCardView: View {
 
 struct DiveCardView_Previews: PreviewProvider {
     static var previews: some View {
-        DiveCardView(durationTime: "54:00", maxDepth: "12.00 m", diveType: .Scuba, diveDate: Date(), diveNumber: 2, diveSite: "White Rocks")
+        DiveCardView(durationTime: "54:00", maxDepth: "12.00 m", diveType: .Scuba, diveDate: Date(), diveNumber: 2, diveSite: "White Rocks", images: [ChosenImage()])
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Singleton {
     
@@ -16,10 +17,30 @@ class Singleton {
     }
     
     var dives: [DiveCard] = [
-    DiveCard( durationTime: "54", maxDepth: "12", diveType: .Scuba, diveDate: Date(), diveNumber: 1, diveSite: "Three Rocks"),
-    DiveCard( durationTime: "59", maxDepth: "12", diveType: .Scuba, diveDate: Date(), diveNumber: 2, diveSite: "White Rocks"),
-    DiveCard(durationTime: "50", maxDepth: "19", diveType: .Scuba, diveDate: Date(), diveNumber: 3, diveSite: "Three Rocks"),
-    DiveCard( durationTime: "34", maxDepth: "22", diveType: .Scuba, diveDate: Date(), diveNumber: 4, diveSite: "Shark Island"),
-    DiveCard(durationTime: "45", maxDepth: "18", diveType: .Scuba, diveDate: Date(), diveNumber: 5, diveSite: "Red Reef"),
+        DiveCard( durationTime: "54", maxDepth: "12", diveType: .Scuba, diveDate: Date(), diveNumber: 1, diveSite: "Three Rocks", images: [
+            ChosenImage(id: UUID(), imageName: UIImage(named: "dive")!),
+            ChosenImage(id: UUID(), imageName: UIImage(named: "dive")!),
+            ChosenImage(id: UUID(), imageName: UIImage(named: "dive")!)
+        ]),
+    DiveCard( durationTime: "59", maxDepth: "12", diveType: .Scuba, diveDate: Date(), diveNumber: 2, diveSite: "White Rocks", images: [
+        ChosenImage(id: UUID(), imageName: UIImage(named: "dive")!),
+        ChosenImage(id: UUID(), imageName: UIImage(named: "dive")!),
+        ChosenImage(id: UUID(), imageName: UIImage(named: "dive")!)
+    ]),
+    DiveCard(durationTime: "50", maxDepth: "19", diveType: .Scuba, diveDate: Date(), diveNumber: 3, diveSite: "Three Rocks", images: [
+        ChosenImage(id: UUID(), imageName: UIImage(named: "dive")!),
+        ChosenImage(id: UUID(), imageName: UIImage(named: "dive")!),
+        ChosenImage(id: UUID(), imageName: UIImage(named: "dive")!)
+    ]),
+    DiveCard( durationTime: "34", maxDepth: "22", diveType: .Scuba, diveDate: Date(), diveNumber: 4, diveSite: "Shark Island", images: [
+        ChosenImage(id: UUID(), imageName: UIImage(named: "color_meh")!),
+        ChosenImage(id: UUID(), imageName: UIImage(named: "color_happy")!),
+        ChosenImage(id: UUID(), imageName: UIImage(named: "color_sad")!)
+    ]),
+    DiveCard(durationTime: "45", maxDepth: "18", diveType: .Scuba, diveDate: Date(), diveNumber: 5, diveSite: "Red Reef", images: [
+        ChosenImage(id: UUID(), imageName: UIImage(named: "color_meh")!),
+        ChosenImage(id: UUID(), imageName: UIImage(named: "color_happy")!),
+        ChosenImage(id: UUID(), imageName: UIImage(named: "color_sad")!)
+    ]),
     ]
 }

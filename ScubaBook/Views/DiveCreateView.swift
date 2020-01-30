@@ -168,7 +168,7 @@ struct DiveCreateView: View {
             }) {
                 Text("Cancel")
             }, trailing: Button(action: {
-                let dive = DiveCard(durationTime: self.durationTime, maxDepth: self.maxDepth, diveType: self.diveType, diveDate: self.diveDate, diveNumber: Singleton.shared.dives.count + 1, diveSite: self.diveSite)
+                let dive = DiveCard(durationTime: self.durationTime, maxDepth: self.maxDepth, diveType: self.diveType, diveDate: self.diveDate, diveNumber: Singleton.shared.dives.count + 1, diveSite: self.diveSite, images: self.images)
                 Singleton.shared.dives.append(dive)
                 self.presentationMode.wrappedValue.dismiss()
             }){
