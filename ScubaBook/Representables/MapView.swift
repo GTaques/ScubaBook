@@ -12,16 +12,20 @@ import SwiftUI
 struct MapView: UIViewRepresentable {
     
     @Binding var centerCoordinate: CLLocationCoordinate2D
+    var annotations: [MKPointAnnotation]
     
     func makeUIView(context: UIViewRepresentableContext<MapView>) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
-        mapView.addAnnotation(MapView.makeAnnotationOnMap(title: "London", subtitle: "lalal", latitude: 51.5, longitude: 0.13))
+        mapView.addAnnotations(annotations)
         return mapView
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        
+        if annotations.count != uiView.annotations.count {
+            uiView.removeAnnotations(uiView.annotations)
+            uiView.addAnnotations(annotations)
+        }
     }
     
     func makeCoordinator() -> MapView.Coordinator {
@@ -54,6 +58,7 @@ struct MapView: UIViewRepresentable {
         }
     }
 }
+
 
 extension MKPointAnnotation {
     

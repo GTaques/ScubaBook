@@ -17,8 +17,8 @@ struct ContentView: View {
         NavigationView {
             ScrollView {
                 ForEach(Singleton.shared.dives.reversed()) { dive in
-                    NavigationLink(destination: DiveDetailView(dive: DiveCardView(durationTime: dive.durationTime, maxDepth: dive.maxDepth, diveType: dive.diveType, diveDate: dive.diveDate, diveNumber: dive.diveNumber, diveSite: dive.diveSite, images: dive.images))) {
-                        DiveCardView(durationTime: dive.durationTime, maxDepth: dive.maxDepth, diveType: dive.diveType, diveDate: dive.diveDate, diveNumber: dive.diveNumber, diveSite: dive.diveSite, images: dive.images)
+                    NavigationLink(destination: DiveDetailView(dive: DiveCardView(durationTime: dive.durationTime, maxDepth: dive.maxDepth, diveType: dive.diveType, diveDate: dive.diveDate, diveNumber: dive.diveNumber, diveSite: dive.diveSite, images: dive.images, locations:  dive.locations))) {
+                        DiveCardView(durationTime: dive.durationTime, maxDepth: dive.maxDepth, diveType: dive.diveType, diveDate: dive.diveDate, diveNumber: dive.diveNumber, diveSite: dive.diveSite, images: dive.images, locations: dive.locations)
                     }
                 }
             }.padding(.horizontal)
@@ -27,7 +27,7 @@ struct ContentView: View {
                 print("Button Pressed!")
                 self.showingModal = true
             }) {
-                Image(systemName: "plus").imageScale(.large)
+                Image(systemName: "plus").imageScale(.large).frame(width: 40, height: 40, alignment: .center)
             }.sheet(isPresented: self.$showingModal) {
                 DiveCreateView(health: .meh, sourceType: .library)
                 })

@@ -8,16 +8,16 @@
 
 import Foundation
 import UIKit
+import MapKit
 
 
 struct DiveCard: Identifiable {
         var id = UUID()
-        var durationTime: String
-        var maxDepth: String
+        var durationTime, maxDepth: String
         var diveType: DiveType
         var diveDate: Date
         var diveNumber: Int
         var diveSite: String
         var images: [ChosenImage]
-        
+        var locations: [MKPointAnnotation]
 }

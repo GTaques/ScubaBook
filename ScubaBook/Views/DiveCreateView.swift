@@ -55,6 +55,7 @@ struct DiveCreateView: View {
     @State private var showingMapView = false
     @State private var centerCoordinate = CLLocationCoordinate2D()
     @State private var locations = [MKPointAnnotation]()
+    @State private var mapViewInUse = true
     
     var body: some View {
         NavigationView {
@@ -103,14 +104,17 @@ struct DiveCreateView: View {
                     }
                     TextField("Duration Time (m)", text: $durationTime).keyboardType(.numberPad)
                     TextField("Max Depth", text: $maxDepth).keyboardType(.numberPad)
+                    
                     Button(action: {
-                        self.showingMapView = true
-                    }) {
-                        Text("Dive Site")
-                    }.sheet(isPresented: self.$showingMapView, content: {
-                        CustomMapSheet(centerCoordinate: self.$centerCoordinate)
-                        })
-                    TextField("Dive Site", text: $diveSite)
+                            self.showingMapView = true
+                        print("Pins ja colocados: \(self.locations.count)")
+                        }) {
+                            Text(self.locations.count == 0 ? "Dive Site" : "Location Added")
+                            
+                        }.sheet(isPresented: $showingMapView, content: {
+                            CustomMapSheet(centerCoordinate: self.$centerCoordinate, locations: self.$locations, showingMapView: self.$showingMapView, mapViewInUse: self.$mapViewInUse)
+                            })
+                    
                     DatePicker(
                         selection: $diveDate,
                         in: ...Date(),
@@ -133,7 +137,6 @@ struct DiveCreateView: View {
                     HStack(alignment: .center, spacing: 20) {
                         Spacer()
                         Button(action: {
-                            print("Bad selected")
                             self.badSelected = true
                             self.mehSelected = false
                             self.goodSelected = false
@@ -147,7 +150,6 @@ struct DiveCreateView: View {
                         .buttonStyle(BorderlessButtonStyle())
                         
                         Button(action: {
-                            print("Meh selected")
                             self.badSelected = false
                             self.mehSelected = true
                             self.goodSelected = false
@@ -160,7 +162,6 @@ struct DiveCreateView: View {
                         .buttonStyle(BorderlessButtonStyle())
                         
                         Button(action: {
-                            print("Good selected")
                             self.badSelected = false
                             self.mehSelected = false
                             self.goodSelected = true
@@ -180,7 +181,7 @@ struct DiveCreateView: View {
             }) {
                 Text("Cancel")
             }, trailing: Button(action: {
-                let dive = DiveCard(durationTime: self.durationTime, maxDepth: self.maxDepth, diveType: self.diveType, diveDate: self.diveDate, diveNumber: Singleton.shared.dives.count + 1, diveSite: self.diveSite, images: self.images)
+                let dive = DiveCard(durationTime: self.durationTime, maxDepth: self.maxDepth, diveType: self.diveType, diveDate: self.diveDate, diveNumber: Singleton.shared.dives.count + 1, diveSite: self.diveSite, images: self.images, locations: self.locations)
                 Singleton.shared.dives.append(dive)
                 self.presentationMode.wrappedValue.dismiss()
             }){
@@ -205,32 +206,52 @@ struct DiveCreateView: View {
 struct CustomMapSheet: View {
     
     @Binding var centerCoordinate: CLLocationCoordinate2D
+    @Binding var locations: [MKPointAnnotation]
+    @Binding var showingMapView: Bool
+    @Binding var mapViewInUse: Bool
     
     var body: some View {
-        ZStack {
-            MapView(centerCoordinate: self.$centerCoordinate)
-                .edgesIgnoringSafeArea(.horizontal)
-            Circle()
-                .fill(Color.blue)
-                .opacity(0.3)
-                .frame(width: 32, height: 32)
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        // create a new location
-                    }) {
-                        Image(systemName: "plus")
-                    }
-                    .padding()
-                    .background(Color.black.opacity(0.75))
-                    .foregroundColor(.white)
-                    .font(.title)
-                    .clipShape(Circle())
-                    .padding(.trailing)
-                }
-            }
+        NavigationView {
+            ZStack {
+                MapView(centerCoordinate: self.$centerCoordinate, annotations: self.locations)
+            //                .edgesIgnoringSafeArea(.horizontal)
+                Circle()
+                            .fill(Color.blue)
+                            .opacity(0.3)
+                            .frame(width: 32, height: 32)
+                        VStack {
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    let newLocation = MKPointAnnotation()
+                                    newLocation.coordinate = self.centerCoordinate
+                                    self.locations.append(newLocation)
+                                }) {
+                                    Image(systemName: "plus")
+                                }
+                                .padding()
+                                .background(Color.black.opacity(0.75))
+                                .foregroundColor(.white)
+                                .font(.title)
+                                .clipShape(Circle())
+                                .padding(.trailing)
+                            }
+                        }
+            }.navigationBarTitle(Text("Add Location"), displayMode: .inline)
+            .navigationBarItems(
+            leading: Button(action: {
+                self.locations = []
+                self.showingMapView = false
+            }) {
+                Text("Cancel")
+            }, trailing: Button(action: {
+                self.mapViewInUse = false
+                self.showingMapView = false
+            }) {
+                Text("Save")
+            })
+            
         }
     }
 }

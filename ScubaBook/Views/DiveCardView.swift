@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 enum DiveType: String {
     case Scuba = "Scuba"
@@ -27,6 +28,7 @@ struct DiveCardView: View {
     @State var diveNumber: Int
     @State var diveSite: String
     @State var images: [ChosenImage]
+    @State var locations: [MKPointAnnotation]
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -90,6 +92,6 @@ struct DiveCardView: View {
 
 struct DiveCardView_Previews: PreviewProvider {
     static var previews: some View {
-        DiveCardView(durationTime: "54:00", maxDepth: "12.00 m", diveType: .Scuba, diveDate: Date(), diveNumber: 2, diveSite: "White Rocks", images: [ChosenImage()])
+        DiveCardView(durationTime: "54:00", maxDepth: "12.00 m", diveType: .Scuba, diveDate: Date(), diveNumber: 2, diveSite: "White Rocks", images: [ChosenImage()], locations: [MKPointAnnotation.example])
     }
 }

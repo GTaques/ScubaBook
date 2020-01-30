@@ -14,12 +14,12 @@ struct DiveDetailView: View {
     
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-            .navigationBarTitle(Text("#\(dive.diveNumber)"), displayMode: .inline)
+            .navigationBarTitle(Text("\(dive.diveSite) #\(dive.diveNumber) "), displayMode: .inline)
     }
 }
 
 struct DiveDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        DiveDetailView(dive: DiveCardView(durationTime: "", maxDepth: "", diveType: .Scuba, diveDate: Date(), diveNumber: 0, diveSite: "", images: []))
+        DiveDetailView(dive: DiveCardView(durationTime: "", maxDepth: "", diveType: .Scuba, diveDate: Date(), diveNumber: 0, diveSite: "", images: [], locations: []))
     }
 }
