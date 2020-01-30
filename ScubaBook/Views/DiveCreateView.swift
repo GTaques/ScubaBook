@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UIKit
+import MapKit
 
 enum SeaHealth {
     case good
@@ -50,6 +51,10 @@ struct DiveCreateView: View {
     @State private var showingImagePicker = false
     @State var imageSelected = UIImage()
     @State var sourceType: SourceType
+    
+    @State private var showingMapView = false
+    @State private var centerCoordinate = CLLocationCoordinate2D()
+    @State private var locations = [MKPointAnnotation]()
     
     var body: some View {
         NavigationView {
@@ -98,6 +103,13 @@ struct DiveCreateView: View {
                     }
                     TextField("Duration Time (m)", text: $durationTime).keyboardType(.numberPad)
                     TextField("Max Depth", text: $maxDepth).keyboardType(.numberPad)
+                    Button(action: {
+                        self.showingMapView = true
+                    }) {
+                        Text("Dive Site")
+                    }.sheet(isPresented: self.$showingMapView, content: {
+                        CustomMapSheet(centerCoordinate: self.$centerCoordinate)
+                        })
                     TextField("Dive Site", text: $diveSite)
                     DatePicker(
                         selection: $diveDate,
@@ -190,10 +202,42 @@ struct DiveCreateView: View {
     }
 }
 
+struct CustomMapSheet: View {
+    
+    @Binding var centerCoordinate: CLLocationCoordinate2D
+    
+    var body: some View {
+        ZStack {
+            MapView(centerCoordinate: self.$centerCoordinate)
+                .edgesIgnoringSafeArea(.horizontal)
+            Circle()
+                .fill(Color.blue)
+                .opacity(0.3)
+                .frame(width: 32, height: 32)
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        // create a new location
+                    }) {
+                        Image(systemName: "plus")
+                    }
+                    .padding()
+                    .background(Color.black.opacity(0.75))
+                    .foregroundColor(.white)
+                    .font(.title)
+                    .clipShape(Circle())
+                    .padding(.trailing)
+                }
+            }
+        }
+    }
+}
+
 struct ImagePickerView: UIViewControllerRepresentable {
     
     @Binding var isPresented: Bool
-//    @Binding var selectedImage: UIImage
     @Binding var images: [ChosenImage]
     @Binding var source: SourceType
     
@@ -225,7 +269,6 @@ struct ImagePickerView: UIViewControllerRepresentable {
             if let selectedImage = info[.originalImage] as? UIImage {
                 print(selectedImage )
                 self.parent.images.append(ChosenImage(id:UUID(), imageName:selectedImage))
-//                self.parent.selectedImage = selectedImage
                 self.parent.isPresented = false
             }
             self.parent.isPresented = false
@@ -239,9 +282,8 @@ struct ImagePickerView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: ImagePickerView.UIViewControllerType, context: UIViewControllerRepresentableContext<ImagePickerView>) {
         
     }
-    
-    
 }
+
 
 struct DiveCreateView_Previews: PreviewProvider {
     
